@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Client>
+@{
+    ViewBag.Title = "Все клиенты";
+}
+<div class="text-center">
+    <table class="table">
+        <tr><td>Наименование</td><td>ИНН клиента</td><td>КПП клиента</td><td>Юр. адрес</td><td>Контактное лицо</td></tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.JuridicalClientName</td>
+                <td>@item.IdentificationNumber</td>
+                <td>@item.Kpp</td>
+                <td>@item.JuridicalAddress</td>
+                <td>@item.ContactClientName</td>
+            </tr>
+        }
+    </table>
+</div>

@@ -1,0 +1,92 @@
+﻿@model Client
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    <form method="post" id="form">
+        <h2>Основные данные клиента:</h2>
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-md-4">
+                <label asp-for="JuridicalClientName" class="control-label">Наименование</label>
+                <input type="text" asp-for="JuridicalClientName" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label asp-for="IdentificationNumber" class="control-label">ИНН клиента</label>
+                <input type="number" asp-for="IdentificationNumber" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Kpp" class="control-label">КПП клиента</label>
+                <input type="number" asp-for="Kpp" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label asp-for="JuridicalAddress " class="control-label">Юр. адрес</label>
+                <input type="text" asp-for="JuridicalAddress" class="form-control" />
+            </div>
+        </div>
+        <h2>Контактное лицо:</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <label asp-for="ContactClientName" class="control-label">ФИО</label>
+                <input type="text" asp-for="ContactClientName" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label asp-for="MobilePhoneClient" class="control-label">Телефон</label>
+                <input type="text" asp-for="MobilePhoneClient" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label asp-for="EmailClient" class="control-label">Email</label>
+                <input type="text" asp-for="EmailClient" class="form-control" />
+                <span asp-validation-for="EmailClient" class="text-danger"></span>
+            </div>
+        </div>
+        <h2>Условия клиента:</h2>
+        <div id="saleItemsContainer">
+            @Html.EditorFor(model => model.SpecialOffers)
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <input type="button" id="AddSale" value="Новое условие" class="btn" />
+            </div>
+            <div class="col-md-2">
+                <input type="button" id="AddNewClient" value="Отправить" class="btn btn-default" />
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('#AddNewClient').click(function () {
+                $.ajax({
+                    type: "GET",
+                    data: $('form').serialize(),
+                    url: '/newClientToAdd',
+                    success: function (result) {
+                        alert(result);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#AddSale').click(function () {
+                $.ajax({
+                    type: "POST",
+                    data: $('form').serialize(),
+                    url: '/newSaleToAdd',
+                    success: function (partialView) {
+                        $('#saleItemsContainer').html(partialView);
+                    }
+                });
+            });
+        });
+    </script>
+}
+
